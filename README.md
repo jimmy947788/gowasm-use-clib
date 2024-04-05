@@ -119,6 +119,21 @@ func Decrypt(secrtyKey []byte, ciphertext string) string {
 
 Furthermore, the examples do not handle memory allocation and release for the strings returned from `C.CString` and `C.Encrypt`/`C.Decrypt` calls. In actual applications, ensure proper memory management to avoid memory leaks.
 
+### JavaScript Code Example
+
+Load WebAssembly in [index.html](goserver/static/index.html):
+
+```javascript
+// Prepare a 32-byte secret key
+let secret = new Uint8Array([31, 63, 210, 217, 114, 192, 171, 225, 29, 225, 12, 140, 3, 19, 110, 132, 188, 228, 132, 35, 144, 38, 168, 153, 210, 203, 150, 127, 141, 239, 8, 22]);
+// Initialize AES
+AesInit(secret);
+// Encrypt
+AesEncrypt("Advanced Encryption Standard $$$$$$$$$$$$$$$$$$$")
+// Decrypt
+AesDecrypt("Tkm0vfvenJfWwNEn/XwogrjOwN3p12U7HLcvtWgE/F4IxlbGGDIpx7KzgLES2fVB")
+```
+
 
 [^1]: Advanced Encryption Standard
 [^2]: Cipher Block Chaining
