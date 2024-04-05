@@ -7,8 +7,8 @@ This project demonstrates the integration of a C library with Go-based WebAssemb
 
 The project is divided into three main directories:
 
-1. `libmyaes`: A C language-based AES library. It is compiled using the Emscripten compiler and includes Makefile for building and installing the library.
-2. `mywasm`: Contains Go code for the WebAssembly module that utilizes the libmyaes for encryption. It is compiled using the TinyGo compiler and includes Makefile for building and installing.
+1. `myaeslib`: A C language-based AES library. It is compiled using the Emscripten compiler and includes Makefile for building and installing the library.
+2. `mywasm`: Contains Go code for the WebAssembly module that utilizes the myaeslib for encryption. It is compiled using the TinyGo compiler and includes Makefile for building and installing.
 3. `goserver`: A simple HTTP server written in Go that serves the WebAssembly module and provides an interface to interact with the AES encryption functionality.
 
 ## Getting Started
@@ -19,12 +19,12 @@ The project is divided into three main directories:
 - Install [TinyGo](https://tinygo.org/getting-started/install/) for compiling Go code to WebAssembly.
 - Install [Go](https://golang.org/doc/install) for running the HTTP server.
 
-### Building and Installing libmyaes
+### Building and Installing myaeslib
 
-Navigate to the `libmyaes` directory:
+Navigate to the `myaeslib` directory:
 
 ```bash
-cd libmyaes
+cd myaeslib
 ```
 
 Run Makefile commands to build and install the AES library:
@@ -69,7 +69,7 @@ The server will start, and you can access the WebAssembly module through the web
 
 ## Usage
 
-Once the server is running, navigate to http://localhost:8080 in your web browser. You should see an interface that allows you to interact with the AES encryption functionality provided by the libmyaes library through WebAssembly.
+Once the server is running, navigate to http://localhost:8080 in your web browser. You should see an interface that allows you to interact with the AES encryption functionality provided by the myaeslib library through WebAssembly.
 
 ## Contributing
 
