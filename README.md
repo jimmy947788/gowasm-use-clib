@@ -1,0 +1,1 @@
+# gowasm-use-clib
