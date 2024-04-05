@@ -7,9 +7,9 @@ This project demonstrates the integration of a C library with Go-based WebAssemb
 
 The project is divided into three main directories:
 
-1. libmyaes: A C language-based AES library. It is compiled using the Emscripten compiler and includes Makefile for building and installing the library.
-2. mywasm: Contains Go code for the WebAssembly module that utilizes the libmyaes for encryption. It is compiled using the TinyGo compiler and includes Makefile for building and installing.
-3. server: A simple HTTP server written in Go that serves the WebAssembly module and provides an interface to interact with the AES encryption functionality.
+1. `libmyaes`: A C language-based AES library. It is compiled using the Emscripten compiler and includes Makefile for building and installing the library.
+2. `mywasm`: Contains Go code for the WebAssembly module that utilizes the libmyaes for encryption. It is compiled using the TinyGo compiler and includes Makefile for building and installing.
+3. `goserver`: A simple HTTP server written in Go that serves the WebAssembly module and provides an interface to interact with the AES encryption functionality.
 
 ## Getting Started
 
@@ -53,16 +53,16 @@ make install
 
 ### Running the HTTP Server
 
-Navigate to the server directory:
+Navigate to the `goserver` directory:
 
 ```bash
-cd server
+cd goserver
 ```
 
 Run the HTTP server:
 
 ```bash
-go run server.go
+go run main.go
 ```
 
 The server will start, and you can access the WebAssembly module through the web browser at http://localhost:8080.
