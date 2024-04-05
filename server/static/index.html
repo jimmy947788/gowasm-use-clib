@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>WASM Test</title>
+    <script src="wasm_exec.js"></script>
+    
+</head>
+<body>
+    <h1>WASM Test Page</h1>
+    <br>
+
+    multiply:<br/> 
+    <input type="number" id="multiplier1" value="2"> * <input type="number" id="multiplier2" value="3"> = <span id="multiply_result"></span> 
+    <br>
+    <button id="multiply_button">Multiply</button>
+    <br>
+    <br>
+
+    <script type="text/javascript">
+        const go = new Go(); // Defined in wasm_exec.js
+        const WASM_URL = 'mywasm.wasm';
+        
+        var wasm;
+
+        // fix for "syscall/js.finalizeRef not implemented"
+		go.importObject.env["syscall/js.finalizeRef"] = function finalizeRef(ref) {
+			console.log("finalizeRef", ref);
+		}	
+
+        // Providing the environment object, used in WebAssembly.instantiateStreaming.
+        // This part goes after "const go = new Go();" declaration.
+        go.importObject.env = {
+            'add': function(x, y) {
+                return x + y
+            }
+            // ... other functions
+        }
+
+        
+        if ('instantiateStreaming' in WebAssembly) {
+            WebAssembly.instantiateStreaming(fetch(WASM_URL), go.importObject).then(function (obj) {
+                wasm = obj.instance;
+                go.run(wasm);
+            })
+        } else {
+            fetch(WASM_URL).then(resp =>
+                resp.arrayBuffer()
+            ).then(bytes =>
+                WebAssembly.instantiate(bytes, go.importObject).then(function (obj) {
+                    wasm = obj.instance;
+                    go.run(wasm);
+                })
+            )
+        }
+
+        // Adding the multiply function
+        const multiply_button = document.getElementById('multiply_button');
+        multiply_button.addEventListener('click', function() {
+            const multiplier1 = parseInt(document.getElementById('multiplier1').value);
+            const multiplier2 = parseInt(document.getElementById('multiplier2').value);
+            const result = wasm.exports.multiply(multiplier1, multiplier2);
+            document.getElementById('multiply_result').innerText = result;
+        });
+    </script>
+</body>
+</html>
