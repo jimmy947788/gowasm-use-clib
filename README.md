@@ -3,15 +3,15 @@
 
 tinygo wasm use c library (AES[^1] CBC[^2] mode)
 
-This project demonstrates the integration of a C library with Go-based WebAssembly and a Go HTTP server. The C library is used for AES encryption, which is compiled to WebAssembly using Emscripten. The Go WebAssembly module interacts with this AES library, and both are served over an HTTP server written in Go.
+This project demonstrates the integration of a C library with Go-based WebAssembly and a Go HTTP server. The C library is used for AES[^1] encryption, which is compiled to WebAssembly using Emscripten. The Go WebAssembly module interacts with this AES[^1] library, and both are served over an HTTP server written in Go.
 
 ## Structure
 
 The project is divided into three main directories:
 
-1. `myaeslib`: A C language-based AES library. It is compiled using the Emscripten compiler and includes Makefile for building and installing the library.
+1. `myaeslib`: A C language-based AES[^1] library. It is compiled using the Emscripten compiler and includes Makefile for building and installing the library.
 2. `mywasm`: Contains Go code for the WebAssembly module that utilizes the myaeslib for encryption. It is compiled using the TinyGo compiler and includes Makefile for building and installing.
-3. `goserver`: A simple HTTP server written in Go that serves the WebAssembly module and provides an interface to interact with the AES encryption functionality.
+3. `goserver`: A simple HTTP server written in Go that serves the WebAssembly module and provides an interface to interact with the AES[^1] encryption functionality.
 
 ## Getting Started
 
@@ -29,7 +29,7 @@ Navigate to the `myaeslib` directory:
 cd myaeslib
 ```
 
-Run Makefile commands to build and install the AES library:
+Run Makefile commands to build and install the AES[^1] library:
 
 ```bash
 make
@@ -73,7 +73,7 @@ The server will start, and you can access the WebAssembly module through the web
 ## Usage Instructions
 
 Starting the Server
-Once the server is running, navigate to `http://localhost:8080` in your web browser. You should see an interface that allows you to interact with the AES encryption functionality provided by the `myaeslib` library through WebAssembly.
+Once the server is running, navigate to `http://localhost:8080` in your web browser. You should see an interface that allows you to interact with the AES[^1] encryption functionality provided by the `myaeslib` library through WebAssembly.
 
 Linking the Static Library
 The C library functions are defined in [myaes.h](mywasm/mycrypto/myaes.h) as follows:
