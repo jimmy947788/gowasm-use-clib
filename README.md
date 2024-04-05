@@ -1,9 +1,7 @@
 # example-gowasm-uselib
 
-*[AES]: Advanced Encryption Standard
-*[CBC]: Cipher Block Chaining
 
-tinygo wasm use c library (AES CBC mode)
+tinygo wasm use c library (AES[^1] CBC[^2] mode)
 
 This project demonstrates the integration of a C library with Go-based WebAssembly and a Go HTTP server. The C library is used for AES encryption, which is compiled to WebAssembly using Emscripten. The Go WebAssembly module interacts with this AES library, and both are served over an HTTP server written in Go.
 
@@ -120,6 +118,10 @@ func Decrypt(secrtyKey []byte, ciphertext string) string {
 **Note:** These examples assume the output will not exceed 128 bytes. In practice, depending on the size of your encrypted text, you might need to adjust the size of the `out` array.
 
 Furthermore, the examples do not handle memory allocation and release for the strings returned from `C.CString` and `C.Encrypt`/`C.Decrypt` calls. In actual applications, ensure proper memory management to avoid memory leaks.
+
+
+[^1]: Advanced Encryption Standard
+[^2]: Cipher Block Chaining
 
 ## Contributing
 
