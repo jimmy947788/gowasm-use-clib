@@ -51,6 +51,7 @@ make install
 ```
 > install: copy `mywasm.wasm` and `wasm_exec.js`from [output](./output/) directory to [server/static](./server/static)
 
+
 ### Running the HTTP Server
 
 Navigate to the `goserver` directory:
@@ -70,6 +71,35 @@ The server will start, and you can access the WebAssembly module through the web
 ## Usage
 
 Once the server is running, navigate to http://localhost:8080 in your web browser. You should see an interface that allows you to interact with the AES encryption functionality provided by the myaeslib library through WebAssembly.
+
+### Link static library
+
+C library function in [myaes.h](mywasm/mycrypto/myaes.h)
+```bash
+int Encrypt(const uint8_t* sdkSecrty, const char* plaintext, char* out);
+int Decrypt(const uint8_t* sdkSecrty, const char* pOutB64, char* out);
+```
+
+prepare go package [myaes.go](mywasm/mycrypto/myaes.go) link static library `libmyaes.a`。
+```go
+/*
+#cgo LDFLAGS: -L. -lmyaes
+#include "myaes.h"
+*/
+import "C"
+import (
+	"unsafe"
+)
+```
+
+call `libmyaes.a` use [cgo](https://pkg.go.dev/cmd/cgo)
+```go
+// int Encrypt(const uint8_t* sdkSecrty, const char* plaintext, char* out);
+C.Encrypt((*C.uint8_t)(&secrtyKey[0]), C.CString(plaintext), (*C.char)(unsafe.Pointer(&out[0])))
+
+//int Decrypt(const uint8_t* sdkSecrty, const char* pOutB64, char* out);
+C.Decrypt((*C.uint8_t)(&secrtyKey[0]), C.CString(ciphertext), (*C.char)(unsafe.Pointer(&out[0])))
+```
 
 ## Contributing
 
