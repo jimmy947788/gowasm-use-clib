@@ -1,5 +1,9 @@
 # example-gowasm-uselib
-tinygo wasm use c library (AES cbc mode)
+
+*[AES]: Advanced Encryption Standard
+*[CBC]: Cipher Block Chaining
+
+tinygo wasm use c library (AES CBC mode)
 
 This project demonstrates the integration of a C library with Go-based WebAssembly and a Go HTTP server. The C library is used for AES encryption, which is compiled to WebAssembly using Emscripten. The Go WebAssembly module interacts with this AES library, and both are served over an HTTP server written in Go.
 
