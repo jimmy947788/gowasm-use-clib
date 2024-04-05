@@ -5,6 +5,7 @@ OUTDIR ?= ../output
 WASM_NAME ?= mywasm
 BUILD_OPT = -opt=2 -panic=trap  -no-debug
 VERSION ?= 1.0.0
+INSTALLDIR ?= ../goserver/static/
 
 # 默认目标
 .PHONY: all
@@ -31,5 +32,5 @@ wasm_exec:
 	fi	
 
 install: wasm_exec
-	cp -f $(OUTDIR)/$(WASM_NAME).wasm ../server/static/
-	cp -f $(OUTDIR)/wasm_exec.js ../server/static/
+	cp -f $(OUTDIR)/$(WASM_NAME).wasm $(INSTALLDIR)
+	cp -f $(OUTDIR)/wasm_exec.js $(INSTALLDIR)
