@@ -68,19 +68,22 @@ go run main.go
 
 The server will start, and you can access the WebAssembly module through the web browser at http://localhost:8080.
 
-## Usage
+## Usage Instructions
 
-Once the server is running, navigate to http://localhost:8080 in your web browser. You should see an interface that allows you to interact with the AES encryption functionality provided by the myaeslib library through WebAssembly.
+Starting the Server
+Once the server is running, navigate to `http://localhost:8080` in your web browser. You should see an interface that allows you to interact with the AES encryption functionality provided by the `myaeslib` library through WebAssembly.
 
-### Link static library
+Linking the Static Library
+The C library functions are defined in [myaes.h](mywasm/mycrypto/myaes.h) as follows:
 
-C library function in [myaes.h](mywasm/mycrypto/myaes.h)
-```bash
-int Encrypt(const uint8_t* sdkSecrty, const char* plaintext, char* out);
-int Decrypt(const uint8_t* sdkSecrty, const char* pOutB64, char* out);
-```
+- `int Encrypt(const uint8_t* sdkSecrty, const char* plaintext, char* out);`: Encryption function
+- `int Decrypt(const uint8_t* sdkSecrty, const char* pOutB64, char* out);`: Decryption function
 
-prepare go package [myaes.go](mywasm/mycrypto/myaes.go) link static library `libmyaes.a`。
+To use these functions in Go code, prepare a Go package [myaes.go](mywasm/mycrypto/myaes.go) to link the static library `libmyaes.a`.
+
+### Go Code Example
+To call `libmyaes.a` using cgo, here's how you can link the static library and call the encryption and decryption functions in your Go code:
+
 ```go
 /*
 #cgo LDFLAGS: -L. -lmyaes
@@ -88,18 +91,31 @@ prepare go package [myaes.go](mywasm/mycrypto/myaes.go) link static library `lib
 */
 import "C"
 import (
-	"unsafe"
+    "unsafe"
 )
+
+// Assume secrtyKey is a []byte slice containing the security key,
+// plaintext is the string to encrypt, and ciphertext is the encrypted string.
+// out is used to store the result of encryption or decryption.
+
+// Encryption example
+func Encrypt(secrtyKey []byte, plaintext string) string {
+    var out [128]byte // Assume the output will not exceed 128 bytes
+    C.Encrypt((*C.uint8_t)(&secrtyKey[0]), C.CString(plaintext), (*C.char)(unsafe.Pointer(&out[0])))
+    return string(out[:])
+}
+
+// Decryption example
+func Decrypt(secrtyKey []byte, ciphertext string) string {
+    var out [128]byte // Assume the output will not exceed 128 bytes
+    C.Decrypt((*C.uint8_t)(&secrtyKey[0]), C.CString(ciphertext), (*C.char)(unsafe.Pointer(&out[0])))
+    return string(out[:])
+}
 ```
 
-call `libmyaes.a` use [cgo](https://pkg.go.dev/cmd/cgo)
-```go
-// int Encrypt(const uint8_t* sdkSecrty, const char* plaintext, char* out);
-C.Encrypt((*C.uint8_t)(&secrtyKey[0]), C.CString(plaintext), (*C.char)(unsafe.Pointer(&out[0])))
+**Note:** These examples assume the output will not exceed 128 bytes. In practice, depending on the size of your encrypted text, you might need to adjust the size of the `out` array.
 
-//int Decrypt(const uint8_t* sdkSecrty, const char* pOutB64, char* out);
-C.Decrypt((*C.uint8_t)(&secrtyKey[0]), C.CString(ciphertext), (*C.char)(unsafe.Pointer(&out[0])))
-```
+Furthermore, the examples do not handle memory allocation and release for the strings returned from `C.CString` and `C.Encrypt`/`C.Decrypt` calls. In actual applications, ensure proper memory management to avoid memory leaks.
 
 ## Contributing
 
